@@ -78,23 +78,21 @@
    });
 
     $('#create-plist').on('click', function(){
-			// TODO: Check empty input fields
-			var defaultIPAUrl = $('#IPA-dropbox-url').val()
-			var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent');
+      // TODO: Check empty input fields
+      var defaultIPAUrl = $('#IPA-dropbox-url').val()
+      var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent');
 
+      $($(window.xmlDoc).find('string')[1]).text(DLIPAUrl);
+      var newXML = $(window.xmlDoc)[0].documentElement.innerHTML;
 
-			$($(window.xmlDoc).find('string')[1]).text(DLIPAUrl);
-			var newXML = $(window.xmlDoc)[0].documentElement.innerHTML;
+      $('#preview').text(newXML);
 
-			$('#preview').text(newXML);
-
-			// Prepare download button
-			var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
-			var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
-			console.log(xmlBody);
-			var a = document.getElementById("download");
-			a.href = URL.createObjectURL(blob);
-			a.download = "manifest.plist";			  
+      // Prepare download button
+      var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
+      var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
+      var a = document.getElementById("download");
+      a.href = URL.createObjectURL(blob);
+      a.download = "manifest.plist";			  
 		})
 
     function manipulateXml() {
