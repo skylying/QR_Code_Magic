@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
-    <meta charset="utf-8" />
-	<script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title></title>
+  <meta charset="utf-8" />
+  <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   
 </head>
 <body>
@@ -13,71 +13,71 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h3>Step1: Upload ios plist</h1>
-				<input id="plistfile" type="file">
+          <input id="plistfile" type="file">
 
-				<h3>Step2: Put IPA dropbox url</h3>
-					<input id="IPA-dropbox-url" style="width: 600px;" type="text" name="" placeholder="https://www.dropbox.com/s/w35u6ixwldawngb/Fun88.ipa"/>
+          <h3>Step2: Put IPA dropbox url</h3>
+          <input id="IPA-dropbox-url" style="width: 600px;" type="text" name="" placeholder="https://www.dropbox.com/s/w35u6ixwldawngb/Fun88.ipa"/>
 
-				<h3>Step3: Download New Plist File</h3>
-				<br />
-				<button id="create-plist" class="btn btn-success">Create *.plist</button>
-				<br />
-				<br />
-				
-				<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">Preview</h3>
-				  </div>
-				  <div class="panel-body">
-				    <pre id="preview">
-				    	plist Preview
-				    </pre>
-				  </div>
-				</div>
+          <h3>Step3: Download New Plist File</h3>
+          <br />
+          <button id="create-plist" class="btn btn-success">Create *.plist</button>
+          <br />
+          <br />
 
-				<a class="btn btn-success" id="download" href="#">Download Plist</a>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Preview</h3>
+            </div>
+            <div class="panel-body">
+              <pre id="preview">
+               plist Preview
+             </pre>
+           </div>
+         </div>
 
-				<h3>Step4: Upload New Plist to dropbox</h3>
-					<h5>Pleaes help your self....</h5>	
+         <a class="btn btn-success" id="download" href="#">Download Plist</a>
 
-				<h3>Step5: Put plist dropbox url</h3>
-					<input id="plist-dropbox-url" style="width: 600px;" type="text" name="" placeholder="https://www.dropbox.com/s/w35u6ixwldawngb/manifest.plist"/>
+         <h3>Step4: Upload New Plist to dropbox</h3>
+         <h5>Pleaes help your self....</h5>	
 
-				<h3>Step6: Generate iOS download link</h3>
+         <h3>Step5: Put plist dropbox url</h3>
+         <input id="plist-dropbox-url" style="width: 600px;" type="text" name="" placeholder="https://www.dropbox.com/s/w35u6ixwldawngb/manifest.plist"/>
 
-				<button id="generate-ios-download-link" class="btn btn-primary">Generate</button>
+         <h3>Step6: Generate iOS download link</h3>
 
-				<div class="panel panel-default">
-				  <div class="panel-heading">
-				    <h3 class="panel-title">iOS download Link</h3>
-				  </div>
-				  <div id="ios-preview" class="panel-body">
-				    iOS download link
-				  </div>
-				</div>
-				
-				<h3>Step7: Generate iOS QR Code</h3>
-				<p>
-				    Go to <a href="https://www.the-qrcode-generator.com/">QR Code generator</a> , paste link in step6
-				</p>
-			</div>
-			<div class="col-md-6">
-				<h1>Android...</h1>
-			</div>
-		</div>
-	</div>
+         <button id="generate-ios-download-link" class="btn btn-primary">Generate</button>
+
+         <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">iOS download Link</h3>
+          </div>
+          <div id="ios-preview" class="panel-body">
+            iOS download link
+          </div>
+        </div>
+
+        <h3>Step7: Generate iOS QR Code</h3>
+        <p>
+          Go to <a href="https://www.the-qrcode-generator.com/">QR Code generator</a> , paste link in step6
+        </p>
+      </div>
+      <div class="col-md-6">
+        <h1>Android...</h1>
+      </div>
+    </div>
+  </div>
   <script>
   	//plist upload onchange to export xml content
-		$('#plistfile').on('change', function(){      
-			var file = this.files[0];
-      fr = new FileReader();
-      fr.readAsText(file);
-      fr.onload = function(){
-      	window.xmlDoc = $.parseXML(fr.result)
-      }
-		});
+    $('#plistfile').on('change', function(){      
+     var file = this.files[0];
+     fr = new FileReader();
+     fr.readAsText(file);
+     fr.onload = function(){
+       window.xmlDoc = $.parseXML(fr.result)
+     }
+   });
 
-		$('#create-plist').on('click', function(){
+    $('#create-plist').on('click', function(){
 			// TODO: Check empty input fields
 			var defaultIPAUrl = $('#IPA-dropbox-url').val()
 			var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent');
@@ -97,46 +97,43 @@
 			a.download = "manifest.plist";			  
 		})
 
-		function manipulateXml() {
-			var defaultIPAUrl = $('#IPA-dropbox-url').val()
-			var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent');
-			console.log(DLIPAUrl);
+    function manipulateXml() {
+     var defaultIPAUrl = $('#IPA-dropbox-url').val()
+     var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent');
+     console.log(DLIPAUrl);
 
-			var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
-			var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
-			var a = document.getElementById("download");
-			a.href = URL.createObjectURL(blob);
-			a.download = "Fun88-manifest.plist";
+     var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
+     var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
+     var a = document.getElementById("download");
+     a.href = URL.createObjectURL(blob);
+     a.download = "Fun88-manifest.plist";
 
-			$($(window.xmlDoc).find('string')[1]).text('https://www.google.com.tw');
-		}
-	
+     $($(window.xmlDoc).find('string')[1]).text('https://www.google.com.tw');
+   }
 
-	function itemserver(){
-		var item =  $('#itemserver').val()
-		$('.link').html('itms-services://?action=download-manifest&url='+item)
-		
-	}
 
-	$('#download-plist').on('click', function(){
-		var html ='<html>hello world</html>';
-		var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
-		var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
-		var a = document.getElementById("download");
-		a.href = URL.createObjectURL(blob);
-		a.download = "Fun88-manifest.plist";
-		console.log(a);
-	})
-	
-	$('#generate-ios-download-link').on('click', function(){
-		var defaultPlistDropboxUrl =  $('#plist-dropbox-url').val()
-		var DLPlistUrl = defaultPlistDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent');
-		var newLink = 'itms-services://?action=download-manifest&url=' + DLPlistUrl;
-		$('#ios-preview').text(newLink);
-	})
-	
-	
-      
-  </script>
+   function itemserver(){
+    var item =  $('#itemserver').val()
+    $('.link').html('itms-services://?action=download-manifest&url='+item)
+
+  }
+
+  $('#download-plist').on('click', function(){
+    var html ='<html>hello world</html>';
+    var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
+    var blob = new Blob([xmlBody], { type: "application/vnd.ms-excel" });
+    var a = document.getElementById("download");
+    a.href = URL.createObjectURL(blob);
+    a.download = "Fun88-manifest.plist";
+    console.log(a);
+  })
+
+  $('#generate-ios-download-link').on('click', function(){
+    var defaultPlistDropboxUrl =  $('#plist-dropbox-url').val()
+    var DLPlistUrl = defaultPlistDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent');
+    var newLink = 'itms-services://?action=download-manifest&url=' + DLPlistUrl;
+    $('#ios-preview').text(newLink);
+  })
+</script>
 </body>
 </html>
