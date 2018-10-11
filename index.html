@@ -6,8 +6,7 @@
   <meta charset="utf-8" />
   <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="qrcode.min.js" type="text/javascript"></script>
-  
+  <script type="text/javascript" src="jquery.qrcode.min.js"></script>
 </head>
 <style type="text/css">
   .empty{
@@ -22,7 +21,7 @@
     background-color: #efefef;
     text-align: center;
   }
-  #qrcode{
+  #qrcode, #qrcode-android{
     width: 260px;
     margin: 0 auto;
   }
@@ -93,7 +92,30 @@
         </p>
       </div>
       <div class="col-md-6">
-        <h1>Android...</h1>
+        <h1>Android</h1>
+        <h3>
+          Step 1: Put apk dropbox url <span class="glyphicon glyphicon-ok empty step1-android" aria-hidden="true"></span>
+        </h3>
+        <p>Make sure you upload Android build .apk file to dropbox, then paste link here</p>
+        <input id="APK-dropbox-url" class="apkinput" style="width: 600px;" type="text" name="" placeholder="EX: https://www.dropbox.com/s/w35u6ixwldawngb/Fun88.apk"/>
+
+        <hr>
+
+        <h3>
+          Step 2: Generate Android QR Code 
+        </h3>
+
+        <button id="generate-android-download-link" class="btn btn-primary">Generate</button>
+        <br>
+        <br>
+
+        <div id="qr-section-android">
+          <div id="qrcode-android">
+            <small>(...QR Code will be genrated here...)</small>
+          </div>
+          <div id="qrlink-android"></div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -151,6 +173,14 @@
       }
     })
 
+    $('.apkinput').on('keyup', function(){
+      if(this.value.length >= 40) {
+        $('.step1-android').removeClass('empty').addClass('checked')
+      } else {
+        $('.step1-android').removeClass('checked').addClass('empty')
+      }
+    })
+
     $('#plist-dropbox-url').on('keyup', function(){
       if(this.value.length >= 40) {
         $('.step5').removeClass('empty').addClass('checked')
@@ -166,9 +196,21 @@
     }
     var defaultPlistDropboxUrl =  $('#plist-dropbox-url').val()
     var DLPlistUrl = defaultPlistDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
-    var newLink = 'itms-services://?action=download-manifest&url=' + DLPlistUrl;
+    var newLink = 'https://www.r30033003.com/#itms-services://?action=download-manifest&url=' + DLPlistUrl;
     $('#qrlink').text(newLink);
-    new QRCode(document.getElementById("qrcode"), newLink);
+    $('#qrcode').qrcode(newLink);
+  })
+
+  $('#generate-android-download-link').on('click', function(){
+    if($('#APK-dropbox-url').val() == '') {
+      alert('Hey man, apk url is empty!')
+      return;
+    }
+    var defaultAPKDropboxUrl =  $('#APK-dropbox-url').val()
+    var DLAPKUrl = defaultAPKDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
+    var newLink = 'https://www.r30033003.com/#' + DLAPKUrl;
+    $('#qrlink-android').text(newLink);
+    $('#qrcode-android').qrcode(newLink);
   })
 
   
