@@ -40,11 +40,15 @@
         <hr>
           
         <h3>
-          Step 2: Put IPA dropbox url <span class="glyphicon glyphicon-ok empty step2" aria-hidden="true"></span>
+          Step 2: Put IPA Download url <span class="glyphicon glyphicon-ok empty step2" aria-hidden="true"></span>
         </h3>
-        <p>Make sure you upload ios build .ipa file to dropbox, then paste link here</p>
+        <p>Make sure you upload ios build .ipa file to dropbox/google, then paste link here</p>
+        <ul>
+          <li>Google Cloud Link supported</li>
+          <li>Dropbox Link supported</li>
+        </ul>
         <p></p>
-        <input id="IPA-dropbox-url" class="plistinput" style="width: 600px;" type="text" name="" placeholder="EX: https://www.dropbox.com/s/w35u6ixwldawngb/Fun88.ipa"/>
+        <input id="IPA-dropbox-url" class="plistinput" style="width: 600px;" type="text" name="" placeholder="Dropbox or Google Cloud Link"/>
 
         <hr>
 
@@ -61,17 +65,17 @@
          
         <hr>
 
-        <h3>Step 4: Upload new plist to dropbox</h3>
+        <h3>Step 4: Upload new plist to Dropbox/Google Cloud</h3>
         <p>I can't help you, please do it yourself</p>	
 
         <hr>
 
         <h3>
-          Step 5: Put plist dropbox url
+          Step 5: Put plist download url
           <span class="glyphicon glyphicon-ok empty step5" aria-hidden="true"></span>
         </h3>
-        <p>Make sure you already upload plist file, and paste plist dropbox link here</p>
-        <input id="plist-dropbox-url" style="width: 600px;" type="text" name="" placeholder="EX:https://www.dropbox.com/s/w35u6ixwldawngb/manifest.plist"/>
+        <p>Make sure you already upload plist file, and paste plist download link here</p>
+        <input id="plist-dropbox-url" style="width: 600px;" type="text" name="" placeholder="Dropbox or Google Cloud Link"/>
 
         <h3>Step 6: Generate iOS QR Code</h3>
 
@@ -96,8 +100,12 @@
         <h3>
           Step 1: Put apk dropbox url <span class="glyphicon glyphicon-ok empty step1-android" aria-hidden="true"></span>
         </h3>
-        <p>Make sure you upload Android build .apk file to dropbox, then paste link here</p>
-        <input id="APK-dropbox-url" class="apkinput" style="width: 600px;" type="text" name="" placeholder="EX: https://www.dropbox.com/s/w35u6ixwldawngb/Fun88.apk"/>
+        <p>Make sure you upload Android build .apk file to Dropbox/Google, then paste link here</p>
+        <ul>
+          <li>Google Cloud Link supported</li>
+          <li>Dropbox Link supported</li>
+        </ul>
+        <input id="APK-dropbox-url" class="apkinput" style="width: 600px;" type="text" name="" placeholder="Dropbox or Google Cloud Link"/>
 
         <hr>
 
@@ -123,7 +131,46 @@
   <div class="footer">Please use this QR Code generator, <strong>Thankssssssssssss</strong>.</div>
 
   <script>
+    // Google doc ** Before conversion **
+    // https://drive.google.com/open?id=0B0JghhdarPBHSmJNMUFUQjNZVjA => cannot work
+    // https://drive.google.com/file/d/0B0JghhdarPBHSmJNMUFUQjNZVjA/view?usp=sharing => can
+    // https://drive.google.com/file/d/15_FeLkx8EHEUsCj-KbBYZ9vCUhzk5jto/view?usp=sharing
+    // https://drive.google.com/file/d/1aji9CdGwyjoZKBrRnkXX1HXKRKjHNpRC/view?usp=sharing
+    // 
+    // Google doc ** After conversion **
+    // https://drive.google.com/uc?export=download&id=0B0JghhdarPBHSmJNMUFUQjNZVjA
+    // 
   	//plist upload onchange to export xml content
+    //
+    function dlConverter(textLink) {
+      var outputText = '';
+      // Check if dropx or google link
+      if (textLink.search('google') != -1) {
+        var search = '?' + textLink.split('?')[1];
+        var u = new URLSearchParams(search);
+        var documentId = u.get('id');
+        if(!documentId) {
+          documentId = ''
+          textLink.split('/').map(function(item){
+            if(item.length > documentId.length && item.search('google') == -1 && item.indexOf('?') == -1) {
+              documentId = item;
+            }
+          })
+        }
+        outputText = "https://drive.google.com/uc?export=download&id=" + documentId;
+      } else if (textLink.search('dropbox') != -1) {
+        outputText = textLink.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
+      } else {
+        try {
+          throw "URL you provide is invalid, only support google drive link or dropbox"
+        } catch(err) {
+          alert(err)
+        }
+      }
+      return outputText;
+    }
+  
+
     $('#plistfile').on('change', function(){      
      var file = this.files[0];
      fr = new FileReader();
@@ -142,12 +189,12 @@
       }
       // TODO: Check empty input fields
       var defaultIPAUrl = $('#IPA-dropbox-url').val()
-      var DLIPAUrl = defaultIPAUrl.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
+      var DirectDLUrl = dlConverter(defaultIPAUrl);
 
-      $($(window.xmlDoc).find('string')[1]).text(DLIPAUrl);
-      var newXML = $(window.xmlDoc)[0].documentElement.innerHTML;
+      $($(window.xmlDoc).find('string')[1]).text(DirectDLUrl);
+      var newXML = $(window.xmlDoc)[0].documentElement.innerHTML;      
 
-      $('#preview').text(newXML);
+      $('#preview').text(newXML.replace('&amp;', '&'));
 
       // Prepare download button
       var xmlBody = $(window.xmlDoc)[0].documentElement.innerHTML;
@@ -195,7 +242,8 @@
       return;
     }
     var defaultPlistDropboxUrl =  $('#plist-dropbox-url').val()
-    var DLPlistUrl = defaultPlistDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
+
+    var DLPlistUrl = dlConverter(defaultPlistDropboxUrl);
     var newLink = 'https://www.r30033003.com/#itms-services://?action=download-manifest&url=' + DLPlistUrl;
     $('#qrlink').text(newLink);
     $('#qrcode').qrcode(newLink);
@@ -207,7 +255,7 @@
       return;
     }
     var defaultAPKDropboxUrl =  $('#APK-dropbox-url').val()
-    var DLAPKUrl = defaultAPKDropboxUrl.replace('www.dropbox', 'dl.dropboxusercontent').replace('?dl=0','');
+    var DLAPKUrl = dlConverter(defaultAPKDropboxUrl);
     var newLink = 'https://www.r30033003.com/#' + DLAPKUrl;
     $('#qrlink-android').text(newLink);
     $('#qrcode-android').qrcode(newLink);
